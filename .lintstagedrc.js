@@ -4,6 +4,6 @@ const buildEslintCommand = filenames =>
     `next lint --fix --file ${filenames.map(f => path.relative(process.cwd(), f)).join(' --file ')}`
 
 module.exports = {
-    '*.{js,jsx,ts,tsx}': [buildEslintCommand, 'git add .'],
-    '*': ['npm run prettier:fix', 'git add .'],
+    '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+    '*': ['npm run prettier:fix'],
 }
