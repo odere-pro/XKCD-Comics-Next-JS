@@ -1,0 +1,90 @@
+name: Deploy Application
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        types: [opened, reopened, synchronize, edited]
+
+env:
+    DOCKER_HUB_PROFILE: oderepro
+    DOCKER_HUB_LATEST_TAG: next-js-kive:latest
+    DOCKER_HUB_GIT_SHA_TAG: next-js-kive:${{ github.sha }}
+
+jobs:
+    unit-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Node.js version
+              id: nvm
+              run: echo $(cat .nvmrc) && echo $(cat .nvmrc) >> NODE_VERSION
+
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Run Tests
+              run: npm run test
+    linter:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Node.js version
+              id: nvm
+              run: echo $(cat .nvmrc) && echo $(cat .nvmrc) >> NODE_VERSION
+
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Run tests
+              run: npm run  lint
+    # TODO: Decided to g with Vercel for the simplicity, to enable Docker image push uncomment and set Action secrets
+    # publish-docker-image:
+    #     needs: [linter, unit-tests]
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Get Node.js version
+    #           id: nvm
+    #           run: echo $(cat .nvmrc) && echo $(cat .nvmrc) >> NODE_VERSION
+
+    #         - name: Use Node.js
+    #           uses: actions/setup-node@v2
+    #           with:
+    #               node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+
+    #         - name: Checkout repository
+    #           uses: actions/checkout@v4
+
+    #         - name: Login to Docker Hub
+    #           uses: docker/login-action@v3
+    #           with:
+    #               username: ${{ secrets.DOCKER_HUB_USERNAME }}
+    #               password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+    #         - name: Build Docker image
+    #           run: docker build -t ${{env.DOCKER_HUB_LATEST_TAG }} .
+
+    #         - name: Tag Docker image
+    #           run: |
+    #               docker tag ${{ env.DOCKER_HUB_LATEST_TAG }} ${{ env.DOCKER_HUB_PROFILE }}/${{ env.DOCKER_HUB_LATEST_TAG }}
+    #               docker tag ${{ env.DOCKER_HUB_LATEST_TAG }} ${{ env.DOCKER_HUB_PROFILE }}/${{ env.DOCKER_HUB_GIT_SHA_TAG }}
+
+    #         - name: Push Docker image
+    #           run: |
+    #               docker push ${{ env.DOCKER_HUB_PROFILE }}/${{ env.DOCKER_HUB_LATEST_TAG }}
+    #               docker push ${{ env.DOCKER_HUB_PROFILE }}/${{ env.DOCKER_HUB_GIT_SHA_TAG }}
