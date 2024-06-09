@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    web:
+        build: .
+        init: true
+        ports:
+            - 3000:3000
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        environment:
+            - NEXT_PUBLIC_MY_SECRET=secret
+        env_file:
+            - .env.local
+        working_dir: /app
+        volumes:
+            - ./:/app
+        command: npm run dev
