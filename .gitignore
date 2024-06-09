@@ -160,4 +160,4 @@ yarn-error.log*
 # vercel
 .vercel
 
-# typescript
+.idea

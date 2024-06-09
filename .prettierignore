@@ -1,0 +1,4 @@
+.coverage
+.next
+*.snap
+node_modules
