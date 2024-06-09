@@ -7,6 +7,7 @@
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
     --spinner-bg: #000;
+    --content-bg: #e8ebec;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +16,7 @@
         --background-start-rgb: 0, 0, 0;
         --background-end-rgb: 0, 0, 0;
         --spinner-bg: #fff;
+        --content-bg: #1c1c1c;
     }
 }
 
@@ -51,5 +53,26 @@ a:hover {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+
+.content-bg {
+    background-color: var(--content-bg);
+}
+
+.grid.md-image-grid {
+    grid-template-rows: repeat(12, minmax(0, 480px));
+}
+
+@media (min-width: 768px) {
+    .grid.image-grid {
+        grid-template-rows: repeat(6, minmax(0, 310px));
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid.image-grid {
+        grid-template-rows: repeat(4, minmax(0, 200px));
     }
 }
