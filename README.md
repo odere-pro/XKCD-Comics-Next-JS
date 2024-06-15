@@ -1,7 +1,7 @@
 # UI to explore XKCD strips
 
-This is a simple UI to explore XKCD strips - https://xkcd.com. It is built using Next.js and TypeScript.
-Demo: https://xkcd-comics-next-js.vercel.app/
+This is a simple UI to explore XKCD strips - <https://xkcd.com>. It is built using Next.js and TypeScript.
+Demo: <https://xkcd-comics-next-js.vercel.app/>
 
 Supported features:
 
