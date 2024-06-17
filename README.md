@@ -5,7 +5,7 @@ Demo: <https://xkcd-comics-next-js.vercel.app/>
 
 Supported features:
 
-1. Display thumbnails for all the strips with lazy loading on home page, route `/`
+1. Display thumbnails for all the strips with pagination on home page, route `/`
 2. When use click on thumbnail, it will open thumbnail page with pagination navigation, route
    `/comics/[id]`
 3. Route `/comics` will redirect to `/comics/[last_id]`
@@ -16,13 +16,12 @@ Supported features:
    every 1 day `/comics/[last_id]`
 8. Dark mode (Next.js + Tailwind fom the box)
 9. Show spinner while fetching XKCD data
-10. Pagination on home page from last comics, show 12 per batch to address performance issues
-11. Dockerized application
-12. Can be deployed on Vercel
-13. Units tests for code readability and to ensure the correctness of the features
-14. ESLint, Prettier, Husky, Lint-staged for code quality
-15. GitHub Actions to validate the code quality and run tests on every PR
-16. CI/CD pipeline to deploy on Vercel on every PR merge
+10. Dockerized application
+11. Can be deployed on Vercel
+12. Units tests for code readability and to ensure the correctness of the features
+13. ESLint, Prettier, Husky, Lint-staged for code quality
+14. GitHub Actions to validate the code quality and run tests on every PR
+15. CI/CD pipeline to deploy on Vercel on every PR merge
 
 Requirements:
 
