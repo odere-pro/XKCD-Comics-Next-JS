@@ -11,21 +11,20 @@ interface HomeProps {
     searchParams: { start: string; end: string; batch: string }
 }
 
-const parseSearchParams = (
+const parseSearchParams = async (
     searchParams: HomeProps['searchParams'],
     lastID = 1,
-): {
+): Promise<{
     batch: number
     end: number
     start: number
-} => {
+}> => {
     let batch = ONE_BATCH
-    let end = lastID
-    let start
+    let batchParam = (await searchParams).batch
 
-    if (searchParams.batch) {
+    if (batchParam) {
         try {
-            batch = parseInt(searchParams.batch, 10)
+            batch = parseInt(batchParam, 10)
         } catch (error) {
             console.warn('Failed to parse "batch" searchParams')
         }
@@ -33,26 +32,32 @@ const parseSearchParams = (
 
     batch = batch > ONE_BATCH ? ONE_BATCH : batch
 
-    if (searchParams.end) {
+    let end = lastID
+    let endParam = (await searchParams).end
+
+    if (endParam) {
         try {
-            end = parseInt(searchParams.end, 10)
+            end = parseInt(endParam, 10)
         } catch (error) {
             console.warn('Failed to parse "batch" searchParams')
         }
     }
 
     end = end - ONE_BATCH <= 0 ? ONE_BATCH : end
+
+    let start
+    let startParam = (await searchParams).start
     start = end - batch + 1
 
-    if (searchParams.start) {
+    if (startParam) {
         try {
-            start = parseInt(searchParams.start, 10)
+            start = parseInt(startParam, 10)
         } catch (error) {
             console.warn('Failed to parse "batch" searchParams')
         }
     }
 
-    // Make sure that window is no more then batch
+    // Make sure that window is no more than a batch
     if (start + batch < end) {
         end = start + batch
     }
@@ -63,11 +68,11 @@ const parseSearchParams = (
         start,
     }
 }
-// Going with sliding window size of no more then 24 images to tackle performance, and internat traffic issues
+// Going with a sliding window size of no more than 24 images to tackle performance and international traffic issues
 export default async function Home(props: HomeProps) {
     const { searchParams } = props
     const lastID = await getLastComicsID()
-    const { start, end, batch } = parseSearchParams(searchParams, lastID)
+    const { start, end, batch } = await parseSearchParams(searchParams, lastID)
     const nextStart = start - batch
     const nextEnd = end - batch
     const prevStart = start + batch
